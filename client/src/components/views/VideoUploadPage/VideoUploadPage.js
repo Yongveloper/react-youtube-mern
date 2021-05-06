@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Typography, Button, Form, Message, Input, Icon } from 'antd';
 import Dropzone from 'react-dropzone';
 
@@ -51,6 +52,21 @@ function VideoUploadPage() {
     setCategory(value);
   };
 
+  const onDrop = (file) => {
+    let formData = new FormData();
+    const config = {
+      header: { 'content-type': 'multipart/form-data' },
+    };
+    formData.append('file', file[0]);
+    axios.post('/api/video/uploadfiles', formData, config).then((response) => {
+      if (response.data.success) {
+        console.log(response.data);
+      } else {
+        alert('비디오 업로드를 실패했습니다.');
+      }
+    });
+  };
+
   return (
     <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -59,7 +75,7 @@ function VideoUploadPage() {
       <Form onSubmit>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           {/* Drop zone */}
-          <Dropzone onDrop multiple maxSize>
+          <Dropzone onDrop={onDrop} multiple={false} maxSize={10000000}>
             {({ getRootProps, getInputProps }) => (
               <div
                 style={{
@@ -69,6 +85,7 @@ function VideoUploadPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  cursor: 'pointer',
                 }}
                 {...getRootProps()}
               >
