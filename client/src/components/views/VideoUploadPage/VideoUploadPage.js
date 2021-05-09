@@ -23,6 +23,9 @@ function VideoUploadPage() {
   const [description, setDescription] = useState('');
   const [videoPrivate, setVideoPrivate] = useState(0);
   const [category, setCategory] = useState('애완동물 및 동물');
+  const [filePath, setFilePath] = useState('');
+  const [duration, setDuration] = useState('');
+  const [thumbnailPath, setThumbnailPath] = useState('');
 
   const onTitleChange = (event) => {
     const {
@@ -65,9 +68,11 @@ function VideoUploadPage() {
           url: response.data.url,
           filename: response.data.fileName,
         };
+        setFilePath(response.data.url);
         axios.post('/api/video/thumbnail', variable).then((response) => {
           if (response.data.success) {
-            console.log(response.data);
+            setDuration(response.data.duration);
+            setThumbnailPath(response.data.url);
           } else {
             alert('미리보기 이미지 생성에 실패했습니다.');
           }
@@ -105,11 +110,15 @@ function VideoUploadPage() {
               </div>
             )}
           </Dropzone>
-
           {/* Thumbnail */}
-          <div>
-            <img src alt />
-          </div>
+          {thumbnailPath && (
+            <div>
+              <img
+                src={`http://localhost:5000/${thumbnailPath}`}
+                alt="thumbnail"
+              />
+            </div>
+          )}
         </div>
         <br />
         <br />

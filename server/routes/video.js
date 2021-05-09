@@ -60,10 +60,10 @@ router.post('/thumbnail', (req, res) => {
 
   // 썸네일 생성
   ffmpeg(req.body.url)
-    .on('fileName', function (fileNames) {
-      console.log(`Will generate ${fileNames.join(', ')}`);
-      console.log(fileNames);
-      filePath = `uploads/thumbnails/${fileNames[0]}`;
+    .on('filenames', function (filenames) {
+      console.log(`Will generate ${filenames.join(', ')}`);
+      console.log(filenames);
+      filePath = 'uploads/thumbnails/' + filenames[0];
     })
     .on('end', function () {
       console.log('Screenshots taken');
