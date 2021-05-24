@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Typography, Button, Form, Message, Input, Icon } from 'antd';
+import { Typography, Button, Form, Message, Input, Icon, message } from 'antd';
 import Dropzone from 'react-dropzone';
+import { useSelector } from 'react-redux';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -18,10 +19,11 @@ const CategoryOptions = [
   { value: 3, label: '애완동물 및 동물' },
 ];
 
-function VideoUploadPage() {
+function VideoUploadPage({ history }) {
+  const user = useSelector((state) => state.user);
   const [videoTitle, setVideoTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [videoPrivate, setVideoPrivate] = useState(0);
+  const [privacy, setPrivacy] = useState(0);
   const [category, setCategory] = useState('애완동물 및 동물');
   const [filePath, setFilePath] = useState('');
   const [duration, setDuration] = useState('');
@@ -45,13 +47,14 @@ function VideoUploadPage() {
     const {
       target: { value },
     } = event;
-    setVideoPrivate(value);
+    setPrivacy(value);
   };
 
   const onCategoryChange = (event) => {
     const {
       target: { value },
     } = event;
+    console.log(value);
     setCategory(value);
   };
 
@@ -83,12 +86,38 @@ function VideoUploadPage() {
     });
   };
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    const variables = {
+      writer: user.userData._id,
+      title: videoTitle,
+      description: description,
+      privacy: privacy,
+      filePath: filePath,
+      category: category,
+      duration: duration,
+      thumbnail: thumbnailPath,
+    };
+
+    axios.post('/api/video/uploadVideo', variables).then((response) => {
+      if (response.data.success) {
+        message.success('성공적으로 업로드를 했습니다.');
+        setTimeout(() => {
+          history.push('/');
+        }, 3000);
+      } else {
+        alert('비디오 업로드를 실패했습니다.');
+      }
+    });
+  };
+
   return (
     <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <Title level={2}>Upload Video</Title>
       </div>
-      <Form onSubmit>
+      <Form onSubmit={onSubmit}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           {/* Drop zone */}
           <Dropzone onDrop={onDrop} multiple={false} maxSize={10000000}>
@@ -148,7 +177,7 @@ function VideoUploadPage() {
         </select>
         <br />
         <br />
-        <Button type="primary" size="large" onClick>
+        <Button type="primary" size="large" onClick={onSubmit}>
           업로드
         </Button>
       </Form>
