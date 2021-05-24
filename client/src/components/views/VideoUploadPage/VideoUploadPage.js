@@ -54,7 +54,6 @@ function VideoUploadPage({ history }) {
     const {
       target: { value },
     } = event;
-    console.log(value);
     setCategory(value);
   };
 
@@ -74,7 +73,8 @@ function VideoUploadPage({ history }) {
         setFilePath(response.data.url);
         axios.post('/api/video/thumbnail', variable).then((response) => {
           if (response.data.success) {
-            setDuration(response.data.duration);
+            console.log(response.data);
+            setDuration(response.data.fileDuration);
             setThumbnailPath(response.data.url);
           } else {
             alert('미리보기 이미지 생성에 실패했습니다.');
