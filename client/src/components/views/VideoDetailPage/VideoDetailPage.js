@@ -7,11 +7,16 @@ const VideoDetailPage = ({ match }) => {
   const {
     params: { videoId },
   } = match;
+
   const variable = { videoId };
 
   const [videoDetail, setVideoDetail] = useState([]);
 
   useEffect(() => {
+    if (videoDetail) {
+      setVideoDetail([]);
+    }
+
     Axios.post('/api/video/getVideoDetail', variable).then((response) => {
       if (response.data.success) {
         setVideoDetail(response.data.videoDetail);
@@ -19,7 +24,7 @@ const VideoDetailPage = ({ match }) => {
         alert('비디오 정보를 가져오기에 실패했습니다.');
       }
     });
-  }, []);
+  }, [videoId]);
 
   if (!videoDetail.writer)
     return (

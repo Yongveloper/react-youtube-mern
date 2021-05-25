@@ -15,7 +15,7 @@ function Footer() {
     >
       <p>
         {' '}
-        Happy Coding <Icon type="smile" />
+        Yong Coding <Icon type="smile" />
       </p>
     </div>
   );

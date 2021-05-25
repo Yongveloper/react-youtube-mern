@@ -24,7 +24,7 @@ const SdieVideo = () => {
         style={{ display: 'flex', marginBottom: '1rem', padding: '0 2rem' }}
       >
         <div style={{ width: '40%', marginRight: '1rem' }}>
-          <Link to>
+          <Link to={`/video/${video._id}`}>
             <img
               style={{ width: '100%' }}
               src={`http://localhost:5000/${video.thumbnail}`}
@@ -34,7 +34,7 @@ const SdieVideo = () => {
         </div>
 
         <div style={{ width: '50%' }}>
-          <Link to style={{ color: 'gray' }}>
+          <Link to={`/video/${video._id}`} style={{ color: 'gray' }}>
             <span style={{ fontSize: '1rem', color: 'black' }}>
               {video.title}
             </span>
