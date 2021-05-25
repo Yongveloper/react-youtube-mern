@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, List, Avatar } from 'antd';
 import Axios from 'axios';
+import SdieVideo from './Sections/SdieVideo';
 
 const VideoDetailPage = ({ match }) => {
   const {
@@ -20,28 +21,44 @@ const VideoDetailPage = ({ match }) => {
     });
   }, []);
 
-  if (!videoDetail.writer) return <div>...Loading</div>;
+  if (!videoDetail.writer)
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '30px',
+          fontWeight: 'bold',
+        }}
+      >
+        ...Loading
+      </div>
+    );
 
   return (
     <Row gutter={[16, 16]}>
-      <Col lg={18} xs={24}></Col>
-      <div style={{ width: '100%', padding: '3rem 4rem' }}>
-        <video
-          style={{ width: '100%' }}
-          src={`http://localhost:5000/${videoDetail.filePath}`}
-          controls
-        />
-        <List.Item actions>
-          <List.Item.Meta
-            avatar={<Avatar src={videoDetail.writer.image} />}
-            title={videoDetail.writer.name}
-            description={videoDetail.description}
+      <Col lg={18} xs={24}>
+        <div style={{ width: '100%', padding: '3rem 4rem' }}>
+          <video
+            style={{ width: '100%' }}
+            src={`http://localhost:5000/${videoDetail.filePath}`}
+            controls
           />
-        </List.Item>
-        {/* Comments */}
-      </div>
+          <List.Item actions>
+            <List.Item.Meta
+              avatar={<Avatar src={videoDetail.writer.image} />}
+              title={videoDetail.writer.name}
+              description={videoDetail.description}
+            />
+          </List.Item>
+          {/* Comments */}
+        </div>
+      </Col>
       <Col lg={6} xs={24}>
-        Side Video
+        <SdieVideo />
       </Col>
     </Row>
   );
