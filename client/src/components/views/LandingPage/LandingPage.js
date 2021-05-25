@@ -19,7 +19,7 @@ function LandingPage() {
       }
     });
   }, []);
-  console.log(video);
+
   const renderCards = video.map((video, index) => {
     const minutes = Math.floor(video.duration / 60);
     const seconds = Math.floor(video.duration - minutes * 60);
