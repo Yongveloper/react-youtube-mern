@@ -53,7 +53,14 @@ const VideoDetailPage = ({ match }) => {
             src={`http://localhost:5000/${videoDetail.filePath}`}
             controls
           />
-          <List.Item actions={[<Subscribe userTo={videoDetail.writer} />]}>
+          <List.Item
+            actions={[
+              <Subscribe
+                userTo={videoDetail.writer}
+                userFrom={localStorage.getItem('userId')}
+              />,
+            ]}
+          >
             <List.Item.Meta
               avatar={<Avatar src={videoDetail.writer.image} />}
               title={videoDetail.writer.name}

@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-const Subscribe = ({ userTo }) => {
+const Subscribe = ({ userTo, userFrom }) => {
   const [subscribeNumber, setSubscribeNumber] = useState(0);
   const [subscribed, setSubscribed] = useState(false);
 
@@ -20,7 +20,7 @@ const Subscribe = ({ userTo }) => {
 
     const subscribedVariable = {
       userTo,
-      userFrom: localStorage.getItem('userId'),
+      userFrom,
     };
 
     Axios.post('/api/subscribe/subscribed', subscribedVariable).then(
@@ -34,6 +34,37 @@ const Subscribe = ({ userTo }) => {
     );
   });
 
+  const onSubscribe = () => {
+    const subscribedVariable = {
+      userTo,
+      userFrom,
+    };
+
+    if (subscribed) {
+      Axios.post('/api/subscribe/unSubscribe', subscribedVariable).then(
+        (response) => {
+          if (response.data.success) {
+            setSubscribeNumber((prevNumber) => prevNumber - 1);
+            setSubscribed((prevState) => !prevState);
+          } else {
+            alert('구독 취소에 실패했습니다.');
+          }
+        }
+      );
+    } else {
+      Axios.post('/api/subscribe/subscribe', subscribedVariable).then(
+        (response) => {
+          if (response.data.success) {
+            setSubscribeNumber((prevNumber) => prevNumber + 1);
+            setSubscribed((prevState) => !prevState);
+          } else {
+            alert('구독 하기에 실패했습니다.');
+          }
+        }
+      );
+    }
+  };
+
   return (
     <div>
       <button
@@ -46,7 +77,7 @@ const Subscribe = ({ userTo }) => {
           fontSize: '1rem',
           textTransform: 'uppercase',
         }}
-        onClick
+        onClick={onSubscribe}
       >
         {subscribeNumber} {subscribed ? 'Subscribed' : 'subscribe'}
       </button>

@@ -15,6 +15,6 @@ const subscriberSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const ViSubscriberdeo = mongoose.model('Subscriber', subscriberSchema);
+const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 
-module.exports = { ViSubscriberdeo };
+module.exports = { Subscriber };
