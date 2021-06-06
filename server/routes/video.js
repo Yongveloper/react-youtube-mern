@@ -64,10 +64,10 @@ router.post('/getSubscriptionVideos', (req, res) => {
     if (error) {
       return res.status(400).send(error);
     }
-    let subscribedUser = [];
-    subscriberInfo.forEach((subscriber) => {
-      subscribedUser.push(subscriber.userTo);
-    });
+
+    const subscribedUser = subscriberInfo.map(
+      (subscriber) => subscriber.userTo
+    );
 
     // 찾은 사람들의 비디오를 가지고 온다.
     Video.find({
